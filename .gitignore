@@ -1,0 +1,20 @@
+node_modules/
+.next/
+
+.env*.local
+!.env.example
+*.tsbuildinfo
+docs/
+# Variables de entorno y secretos
+.env*
+!.env.example
+
+# Logs, cobertura y despliegues locales
+*.log
+coverage/
+.vercel/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+supabase/*
