@@ -1,6 +1,6 @@
 # Carga Deportiva
 
-MVP para registrar minutos y escala de Borg por jugador y partido.
+Aplicación de fútbol para registrar minutos y escala de Borg por jugador y partido, aislada por club.
 
 ## Requisitos
 
@@ -11,11 +11,13 @@ MVP para registrar minutos y escala de Borg por jugador y partido.
 
 1. Copiá `.env.example` a `.env.local` y completá sus variables con los datos
    de tu proyecto de Supabase.
-2. En el SQL Editor de Supabase, ejecutá primero
+2. En el SQL Editor de Supabase de **desarrollo**, ejecutá primero
    `supabase/migrations/202609140001_initial_schema.sql` y luego
    `supabase/seed.sql`.
-3. Instalá dependencias: `npm install`.
-4. Iniciá la app: `npm run dev`.
+3. Creá un usuario en Supabase Auth y asociá su UUID a un club mediante
+   `insert into public.profiles (id, club_id) values ('UUID_DEL_USUARIO', 'UUID_DEL_CLUB');`.
+4. Instalá dependencias: `npm install`.
+5. Iniciá la app: `npm run dev`.
 
 Abrí `http://localhost:3000`.
 
@@ -28,3 +30,9 @@ Abrí `http://localhost:3000`.
 Para desplegar en Vercel, importá el repositorio y configurá las dos variables
 `NEXT_PUBLIC_SUPABASE_*` con los mismos valores del entorno correspondiente.
 No usar la service role key en el navegador.
+
+## Base de desarrollo
+
+La migración inicial y el seed reconstruyen el modelo para datos mock. No los
+ejecutes sobre una instancia con datos reales; a partir de producción, usar
+migraciones incrementales.
