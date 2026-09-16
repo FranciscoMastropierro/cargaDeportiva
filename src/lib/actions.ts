@@ -43,5 +43,5 @@ export async function saveMatchStats(formData: FormData) {
   const matchId = value(formData, "matchId");
   const entries = Array.from(formData.getAll("playerId")).flatMap((entry) => { const playerId = String(entry), minutes = value(formData, `minutes-${playerId}`), borg = value(formData, `borg-${playerId}`); if (!minutes && !borg) return []; return [statSchema.parse({ playerId, minutesPlayed: Number(minutes), borg: Number(borg) })]; });
   const { supabase } = await getClubContext(); const { error } = await supabase.rpc("replace_match_stats", { p_match_id: matchId, p_stats: entries.map((entry) => ({ player_id: entry.playerId, minutes_played: entry.minutesPlayed, borg: entry.borg })) });
-  if (error) throw error; revalidatePath(`/matches/${matchId}`); revalidatePath("/dashboard");
+  if (error) throw error; revalidatePath(`/matches/${matchId}`); revalidatePath("/dashboard"); redirect("/dashboard");
 }
