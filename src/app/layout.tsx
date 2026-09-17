@@ -4,7 +4,7 @@ import PwaRegistrar from "@/components/pwa-registrar";
 import ThemeToggle from "@/components/theme-toggle";
 import "./globals.css";
 
-export const metadata: Metadata = { title: "Control de Carga de Jugadores", description: "Registro de minutos y Borg para fútbol", applicationName: "Control de Carga de Jugadores", icons: { icon: "/icon.svg", apple: "/icon.svg" }, appleWebApp: { capable: true, title: "Carga Jugadores", statusBarStyle: "default" } };
+export const metadata: Metadata = { title: "Control de Carga de Jugadores", description: "Registro de minutos y Borg para fútbol", applicationName: "Control de Carga de Jugadores", icons: { icon: "/icon-1024.png", apple: "/icon-1024.png" }, appleWebApp: { capable: true, title: "Carga Jugadores", statusBarStyle: "default" } };
 export const viewport: Viewport = { themeColor: "#176b4a" };
 const items = [["/dashboard", "Control de carga"], ["/players", "Jugadores"], ["/matches", "Partidos"], ["/competitions", "Competencias"]] as const;
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

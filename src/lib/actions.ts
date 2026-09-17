@@ -45,3 +45,10 @@ export async function saveMatchStats(formData: FormData) {
   const { supabase } = await getClubContext(); const { error } = await supabase.rpc("replace_match_stats", { p_match_id: matchId, p_stats: entries.map((entry) => ({ player_id: entry.playerId, minutes_played: entry.minutesPlayed, borg: entry.borg })) });
   if (error) throw error; revalidatePath(`/matches/${matchId}`); revalidatePath("/dashboard"); redirect("/dashboard");
 }
+
+export async function signOut() {
+  const supabase = await getSupabase();
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+  redirect("/login");
+}
