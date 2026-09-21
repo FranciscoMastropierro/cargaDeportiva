@@ -51,7 +51,7 @@ create table public.player_match_stats (
   id uuid primary key default gen_random_uuid(),
   player_id uuid not null references public.players(id),
   match_id uuid not null references public.matches(id) on delete cascade,
-  minutes_played integer not null check (minutes_played >= 0),
+  minutes_played integer not null check (minutes_played between 0 and 120),
   borg integer not null check (borg between 0 and 10),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -119,7 +119,7 @@ declare v_club_id uuid;
 begin
   select club_id into v_club_id from public.matches where id = p_match_id;
   if v_club_id is null or v_club_id is distinct from public.current_club_id() then raise exception 'El partido no existe o no pertenece a tu club'; end if;
-  if exists (select 1 from jsonb_to_recordset(p_stats) as item(player_id uuid, minutes_played integer, borg integer) where item.minutes_played < 0 or item.borg not between 0 and 10) then raise exception 'Minutos o Borg inválidos'; end if;
+  if exists (select 1 from jsonb_to_recordset(p_stats) as item(player_id uuid, minutes_played integer, borg integer) where item.minutes_played not between 0 and 120 or item.borg not between 0 and 10) then raise exception 'Los minutos deben estar entre 0 y 120 y Borg entre 0 y 10'; end if;
   if exists (select 1 from jsonb_to_recordset(p_stats) as item(player_id uuid, minutes_played integer, borg integer) left join public.players p on p.id = item.player_id where p.club_id is distinct from v_club_id) then raise exception 'Hay jugadores que no pertenecen al club'; end if;
   delete from public.player_match_stats where match_id = p_match_id;
   insert into public.player_match_stats (match_id, player_id, minutes_played, borg)

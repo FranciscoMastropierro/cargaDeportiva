@@ -1,4 +1,4 @@
-# Carga Deportiva
+# JUEGASANO
 
 Aplicación de fútbol para registrar minutos y escala de Borg por jugador y partido, aislada por club.
 
@@ -11,9 +11,8 @@ Aplicación de fútbol para registrar minutos y escala de Borg por jugador y par
 
 1. Copiá `.env.example` a `.env.local` y completá sus variables con los datos
    de tu proyecto de Supabase.
-2. En el SQL Editor de Supabase de **desarrollo**, ejecutá primero
-   `supabase/migrations/202609140001_initial_schema.sql` y luego
-   `supabase/seed.sql`.
+2. En el SQL Editor de Supabase de **desarrollo**, ejecutá las migraciones en
+   orden por fecha y luego `supabase/seed.sql` si necesitás datos mock.
 3. Creá un usuario en Supabase Auth y asociá su UUID a un club mediante
    `insert into public.profiles (id, club_id) values ('UUID_DEL_USUARIO', 'UUID_DEL_CLUB');`.
 4. Instalá dependencias: `npm install`.

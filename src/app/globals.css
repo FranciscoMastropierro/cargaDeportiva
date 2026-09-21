@@ -11,7 +11,17 @@ button { cursor: pointer; }
 .button { display: inline-flex; justify-content: center; border: 0; border-radius: .65rem; background: var(--accent); color: white; padding: .75rem 1rem; font-weight: 700; text-decoration: none; }
 .button-secondary { background: var(--card); color: var(--accent); border: 1px solid var(--accent); }
 .nav-link { color: var(--muted); text-decoration: none; font-size: .78rem; font-weight: 700; }
+.nav-link-active { color: var(--accent); }
+.brand { color: var(--ink); font-size: 1.1rem; font-weight: 800; text-decoration: none; }
+.desktop-nav { max-width: 68rem; margin: 0 auto; align-items: center; gap: 2rem; border-bottom: 1px solid var(--border); padding: 1rem; }
+.mobile-actions { grid-template-columns: repeat(3, 44px); background: var(--card); border: 1px solid var(--border); }
+.mobile-actions .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; }
+.mobile-actions .action-icon { text-decoration: none; font-size: 1.5rem; }
+.theme-toggle:hover { background: var(--surface); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.form-error { border-radius: .65rem; background: #fef2f2; color: #991b1b; padding: .75rem; font-size: .875rem; }
+:root[data-theme="dark"] .form-error { background: #482225; color: #fecaca; }
 .theme-toggle { border: 1px solid var(--border); border-radius: .55rem; background: var(--card); color: var(--ink); padding: .35rem .55rem; font-size: 1rem; }
 body .mobile-nav { border-color: var(--border); background: var(--card); }
 .nav-link:hover { color: var(--accent); }
-@media (min-width: 768px) { .mobile-nav { position: static !important; max-width: 68rem; margin: 0 auto; border-radius: 0 0 1rem 1rem; } }
+@media print { .desktop-nav, .mobile-nav, form, .button { display: none !important; } main { max-width: none !important; padding: 0 !important; } .card { border: 0; padding: 0; } }
