@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DeletePlayerButton from "@/components/delete-player-button";
 import ConfirmationForm from "@/components/confirmation-form";
 import { savePlayer, togglePlayer } from "@/lib/actions";
 import { getPlayers } from "@/lib/data";
@@ -16,7 +17,7 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
   const selected = players.find((player) => player.id === edit);
 
   return <section className="space-y-5">
-    <header><h1 className="text-2xl font-bold">Jugadores</h1><p className="text-sm text-slate-600">Administrá el plantel activo.</p></header>
+    <header className="flex flex-wrap items-center justify-between gap-3"><div><h1 className="text-2xl font-bold">Jugadores</h1><p className="text-sm text-slate-600">Administrá el plantel activo.</p></div><Link className="button" href="/players/import">Cargar CSV</Link></header>
     <ConfirmationForm key={selected?.id ?? "new-player"} action={savePlayer} kind="player" confirm={Boolean(selected)} className="card grid gap-3 md:grid-cols-4">
       <input type="hidden" name="id" value={selected?.id ?? ""} />
       {selected && <div className="flex items-center justify-between md:col-span-4"><p className="text-sm font-bold text-emerald-800">Editando a {selected.name}</p><Link className="text-sm font-bold text-emerald-800" href="/players">Cancelar</Link></div>}
@@ -25,6 +26,6 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
       <label className="grid gap-1 text-sm font-medium">Estado físico<select name="physicalStatus" defaultValue={selected?.physical_status ?? "available"}><option value="available">Disponible</option><option value="minor_issue">Molestia</option><option value="injured">Lesionado</option></select></label>
       <button className="button self-end" type="submit">{selected ? "Guardar cambios" : "Agregar jugador"}</button>
     </ConfirmationForm>
-    <div className="grid gap-3 sm:grid-cols-2">{players.map((player) => <article className="card flex items-center justify-between gap-3" key={player.id}><div><h2 className={player.physical_status === "injured" ? "font-bold text-red-700" : player.physical_status === "minor_issue" ? "font-bold text-amber-700" : "font-bold"}>{player.name}</h2><p className="text-sm text-slate-600">{player.position} · {player.active ? "Activo" : "Inactivo"} · {physicalStatusLabel(player.physical_status)}</p></div><div className="flex gap-2"><Link className="button button-secondary" href={`/players?edit=${player.id}`}>Editar</Link><form action={togglePlayer} noValidate><input type="hidden" name="id" value={player.id} /><input type="hidden" name="active" value={String(player.active)} /><button className="button button-secondary" type="submit">{player.active ? "Desactivar" : "Activar"}</button></form></div></article>)}</div>
+    <div className="grid gap-3 sm:grid-cols-2">{players.map((player) => <article className="card flex flex-wrap items-center justify-between gap-3" key={player.id}><div><h2 className={player.physical_status === "injured" ? "font-bold text-red-700" : player.physical_status === "minor_issue" ? "font-bold text-amber-700" : "font-bold"}>{player.name}</h2><p className="text-sm text-slate-600">{player.position} · {player.active ? "Activo" : "Inactivo"} · {physicalStatusLabel(player.physical_status)}</p></div><div className="flex flex-wrap gap-2"><Link className="button button-secondary" href={`/players?edit=${player.id}`}>Editar</Link><form action={togglePlayer} noValidate><input type="hidden" name="id" value={player.id} /><input type="hidden" name="active" value={String(player.active)} /><button className="button button-secondary" type="submit">{player.active ? "Desactivar" : "Activar"}</button></form><DeletePlayerButton id={player.id} name={player.name} /></div></article>)}</div>
   </section>;
 }

@@ -2,6 +2,7 @@
 
 import { type FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import PasswordInput from "@/components/password-input";
 import { getBrowserSupabase } from "@/lib/supabase/client";
 
 export default function ResetPasswordPage() {
@@ -14,5 +15,5 @@ export default function ResetPasswordPage() {
     if (updateError) { setError("No se pudo actualizar la contraseña. Solicitá un enlace nuevo."); return; }
     router.replace("/dashboard"); router.refresh();
   }
-  return <main className="mx-auto flex min-h-screen max-w-md items-center px-4"><form noValidate onSubmit={submit} className="card w-full space-y-4"><header><h1 className="text-2xl font-bold">Nueva contraseña</h1><p className="text-sm text-slate-600">Elegí una contraseña de al menos 8 caracteres.</p></header><label className="grid gap-1 text-sm font-medium">Contraseña nueva<input name="password" type="password" autoComplete="new-password" disabled={!ready} /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="button w-full" disabled={!ready} type="submit">Guardar contraseña</button></form></main>;
+  return <main className="mx-auto flex min-h-screen max-w-md items-center px-4"><form noValidate onSubmit={submit} className="card w-full space-y-4"><header><h1 className="text-2xl font-bold">Nueva contraseña</h1><p className="text-sm text-slate-600">Elegí una contraseña de al menos 8 caracteres.</p></header><label className="grid gap-1 text-sm font-medium">Contraseña nueva<PasswordInput name="password" autoComplete="new-password" disabled={!ready} /></label>{error && <p className="form-error" role="alert">{error}</p>}<button className="button w-full" disabled={!ready} type="submit">Guardar contraseña</button></form></main>;
 }

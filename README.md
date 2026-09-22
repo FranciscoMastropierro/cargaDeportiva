@@ -22,6 +22,7 @@ Abrí `http://localhost:3000`.
 
 ## Calidad y deploy
 
+- `npm test`
 - `npm run lint`
 - `npm run typecheck`
 - `npm run build`
@@ -29,6 +30,8 @@ Abrí `http://localhost:3000`.
 Para desplegar en Vercel, importá el repositorio y configurá las dos variables
 `NEXT_PUBLIC_SUPABASE_*` con los mismos valores del entorno correspondiente.
 No usar la service role key en el navegador.
+
+La activación de administración exclusiva, invitaciones, carga CSV y eliminación con historial está documentada en [supabase/ETAPA_2_SETUP.md](supabase/ETAPA_2_SETUP.md). Requiere las migraciones incrementales 005–006, asignación explícita del administrador y configuración de correo; no se activa ni migra automáticamente al compilar.
 
 ## Base de desarrollo
 

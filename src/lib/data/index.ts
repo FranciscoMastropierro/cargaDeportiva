@@ -1,3 +1,4 @@
+import { parseDashboardFilters, dashboardDateRange } from "@/lib/validations/dashboard";
 import { getSupabase } from "@/lib/supabase/server";
 import type { Competition, DashboardRow, Match, Player, PlayerMatchStat } from "@/types/domain";
 
@@ -46,15 +47,15 @@ export async function getMatchStats(matchId: string) {
 }
 
 export async function getDashboard(period: "month" | "year" | "total", date: string, competitionId?: string, playerId?: string) {
-  const [year, calendarMonth] = date.split("-").map(Number);
-  const start = period === "month" ? `${date}-01` : period === "year" ? `${year}-01-01` : undefined;
-  const end = period === "month" ? new Date(Date.UTC(year, calendarMonth, 1)).toISOString().slice(0, 10) : period === "year" ? `${year + 1}-01-01` : undefined;
+  const filters = parseDashboardFilters({ period, date, competition: competitionId, player: playerId });
+  if (!filters) throw new Error("Filtro inválido.");
+  const range = dashboardDateRange(filters);
   const players = await getPlayers(false);
   const supabase = await getSupabase();
   let query = supabase
     .from("player_match_stats")
     .select("player_id,minutes_played,borg,matches!inner(match_date,competition_id)");
-  if (start && end) query = query.gte("matches.match_date", start).lt("matches.match_date", end);
+  if (range) query = query.gte("matches.match_date", range.start).lte("matches.match_date", range.end);
   if (competitionId) query = query.eq("matches.competition_id", competitionId);
   if (playerId) query = query.eq("player_id", playerId);
   const { data, error } = await query;

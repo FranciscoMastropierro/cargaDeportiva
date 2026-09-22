@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+.password-toggle { position: absolute; right: .2rem; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: transparent; border: 0; color: inherit; }
+.password-toggle:focus-visible, .button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.report-copy { width: 100%; background: var(--card); color: var(--ink); border: 1px solid var(--border); padding: .75rem; }
+.report-table-wrap { overflow-x: auto; }
+.report-table { width: 100%; border-collapse: collapse; font-size: .875rem; text-align: left; }
+.report-table th, .report-table td { padding: .65rem; border-bottom: 1px solid var(--border); overflow-wrap: anywhere; }
+.report-table caption { text-align: left; font-weight: bold; padding-bottom: .75rem; }
+@media print {
+  :root, :root[data-theme="dark"] { --ink: #000; --muted: #333; --surface: #fff; --card: #fff; --border: #bbb; color-scheme: light; }
+  body { background: white !important; color: black !important; }
+  .report-controls { display: none !important; }
+  .report-table-wrap { overflow: visible !important; }
+  .report-table { table-layout: fixed; font-size: 10pt; }
+  .report-table thead { display: table-header-group; }
+  .report-table tr { break-inside: avoid; }
+  @page { size: A4; margin: 15mm; }
+}
+
 :root { --ink: #17211f; --muted: #64706c; --surface: #f5f7f5; --card: #fff; --border: #dce3df; --input-border: #cfd8d3; --accent: #176b4a; }
 :root[data-theme="dark"] { --ink: #edf5f0; --muted: #b7c5bd; --surface: #101916; --card: #19251f; --border: #31433a; --input-border: #4b6156; --accent: #49a67a; }
 * { box-sizing: border-box; }
@@ -15,8 +33,8 @@ button { cursor: pointer; }
 .brand { color: var(--ink); font-size: 1.1rem; font-weight: 800; text-decoration: none; }
 .desktop-nav { max-width: 68rem; margin: 0 auto; align-items: center; gap: 2rem; border-bottom: 1px solid var(--border); padding: 1rem; }
 .mobile-actions { grid-template-columns: repeat(3, 44px); background: var(--card); border: 1px solid var(--border); }
-.mobile-actions .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; }
-.mobile-actions .action-icon { text-decoration: none; font-size: 1.5rem; }
+.theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; }
+.action-icon { text-decoration: none; font-size: 1.5rem; }
 .theme-toggle:hover { background: var(--surface); }
 .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .form-error { border-radius: .65rem; background: #fef2f2; color: #991b1b; padding: .75rem; font-size: .875rem; }

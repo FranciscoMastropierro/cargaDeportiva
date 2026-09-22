@@ -14,9 +14,18 @@ export async function middleware(request: NextRequest) {
     },
   });
   const { data: { user } } = await supabase.auth.getUser();
-  const isPublic = ["/login", "/forgot-password", "/auth/callback"].includes(request.nextUrl.pathname);
-  if (!user && !isPublic) return NextResponse.redirect(new URL("/login", request.url));
-  if (user && request.nextUrl.pathname === "/login") return NextResponse.redirect(new URL("/dashboard", request.url));
+  function redirectWithSession(path: string) {
+    const redirect = NextResponse.redirect(new URL(path, request.url));
+    response.cookies.getAll().forEach(cookie => redirect.cookies.set(cookie));
+    return redirect;
+  }
+  const isPublic = ["/login", "/forgot-password", "/auth/callback", "/auth/confirm"].includes(request.nextUrl.pathname);
+  if (!user && !isPublic) return redirectWithSession("/login");
+  if (user && request.nextUrl.pathname === "/login") return redirectWithSession("/dashboard");
+  if (user && ["/dashboard", "/players", "/matches", "/competitions"].some(route => pathname === route || pathname.startsWith(`${route}/`))) {
+    const { data: profile, error } = await supabase.from("profiles").select("club_id").eq("id", user.id).maybeSingle();
+    if (error || !profile) return redirectWithSession("/account/unlinked");
+  }
   return response;
 }
 
