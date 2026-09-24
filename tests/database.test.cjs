@@ -70,7 +70,9 @@ test('duplicados requieren autorización explícita y las posiciones se revalida
   await db.exec('rollback to savepoint duplicate');
   assert.equal(await doImport(s.revision,[{name:'José Pérez',position:'Volante',allowDuplicate:true}]),1);
   const fresh = await snapshot();
-  await assert.rejects(doImport(fresh.revision,[{name:'Otro',position:'Defensor'}],id(102)), /posiciones inválidos/);
+  assert.equal(await doImport(fresh.revision,[{name:'Defensa',position:'Defensor'}],id(102)),1);
+  const latest = await snapshot();
+  await assert.rejects(doImport(latest.revision,[{name:'Otro',position:'Carrilero'}],id(103)), /posiciones inválidos/);
 });
 test('sin club no importa y RLS oculta jugadores ajenos', async () => {
   await query("insert into players(club_id,name,position) values($1,'Ajeno','Arquero')", [clubB]);

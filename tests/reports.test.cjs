@@ -10,18 +10,20 @@ function load(file) {
 }
 const { parseDashboardFilters: parse, dashboardDateRange: range, dashboardTitle: title, dashboardQuery: query } = load('src/lib/validations/dashboard.ts');
 const { reportText, borgText } = load('src/lib/reports/format.ts');
-test('filtros inválidos se rechazan y reloj fijo determina el mes', () => {
-  assert.equal(parse({}, new Date('2026-09-21T12:00:00Z')).date, '2026-09');
+test('filtros inválidos se rechazan y el período inicial es total', () => {
+  const initial = parse({}, new Date('2026-09-21T12:00:00Z'));
+  assert.equal(initial.period, 'total');
+  assert.equal(initial.date, '2026-09');
   for (const date of ['0000-01', '2026-00', '2026-13', '10000-01', '26-01', '2026-02-31', 'bad']) assert.equal(parse({ date }), null, date);
   assert.equal(parse({ period: 'bad' }), null);
   assert.equal(parse({ date: ['2026-01'] }), null);
   assert.equal(parse({ player: 'bad' }), null);
 });
 test('límites del calendario, años extremos y cambio de período', () => {
-  for (const [date, end] of [['0001-02','0001-02-28'], ['0099-12','0099-12-31'], ['2000-02','2000-02-29'], ['1900-02','1900-02-28'], ['9999-12','9999-12-31']]) assert.equal(range(parse({ date })).end, end);
+  for (const [date, end] of [['0001-02','0001-02-28'], ['0099-12','0099-12-31'], ['2000-02','2000-02-29'], ['1900-02','1900-02-28'], ['9999-12','9999-12-31']]) assert.equal(range(parse({ period: 'month', date })).end, end);
   assert.deepEqual(range(parse({ period: 'year', date: '9999' })), { start: '9999-01-01', end: '9999-12-31' });
   assert.equal(range(parse({ period: 'total' })), null);
-  assert.equal(title(parse({ date: '2026-09' })), 'Carga septiembre de 2026');
+  assert.equal(title(parse({ period: 'month', date: '2026-09' })), 'Carga septiembre de 2026');
   assert.equal(title(parse({ period: 'year', date: '2026-09' })), 'Carga de 2026');
   assert.equal(title(parse({ period: 'total' })), 'Carga histórica');
   assert.equal(query(parse({ date: '2026-09', page: '2' })).has('page'), false);
