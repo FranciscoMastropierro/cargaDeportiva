@@ -27,6 +27,13 @@ export async function getMatches() {
   return (data ?? []) as unknown as Match[];
 }
 
+export async function getMatchYears() {
+  const supabase = await getSupabase();
+  const { data, error } = await supabase.from("matches").select("match_date").order("match_date", { ascending: false });
+  if (error) throw error;
+  return [...new Set((data ?? []).map((match) => match.match_date.slice(0, 4)))];
+}
+
 export async function getMatch(id: string) {
   const supabase = await getSupabase(); const { data, error } = await supabase
     .from("matches")
