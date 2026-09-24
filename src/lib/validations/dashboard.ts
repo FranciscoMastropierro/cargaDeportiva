@@ -3,7 +3,7 @@ type Params = Record<string, string | string[] | undefined>;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export function parseDashboardFilters(params: Params, now = new Date()): DashboardFilters | null {
-  const period = params.period ?? "month";
+  const period = params.period ?? "total";
   const date = params.date ?? now.toISOString().slice(0, 7);
   if (period !== "month" && period !== "year" && period !== "total") return null;
   if (typeof date !== "string" || !/^\d{4}(-(?:0[1-9]|1[0-2]))?$/.test(date) || Number(date.slice(0, 4)) === 0) return null;

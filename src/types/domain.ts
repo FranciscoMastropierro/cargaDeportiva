@@ -1,5 +1,5 @@
 export type PhysicalStatus = "available" | "minor_issue" | "injured";
-export const FOOTBALL_POSITIONS = ["Arquero", "Defensor central", "Defensor lateral", "Mediocampista", "Volante", "Enganche", "Delantero"] as const;
+export const FOOTBALL_POSITIONS = ["Arquero", "Defensor", "Defensor central", "Defensor lateral", "Mediocampista", "Volante", "Enganche", "Delantero"] as const;
 export type Player = { id: string; name: string; position: string; active: boolean; physical_status: PhysicalStatus };
 export type Competition = { id: string; name: string; active: boolean };
 export type Match = { id: string; competition_id: string; match_date: string; opponent: string; competitions?: { name: string } | null };
